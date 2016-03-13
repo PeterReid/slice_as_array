@@ -1,3 +1,12 @@
+// Copyright 2016 Peter Reid. See the COPYRIGHT file at the top-level
+// directory of this distribution.
+//
+// Licensed under the Apache License, Version 2.0 <LICENSE-APACHE or
+// http://www.apache.org/licenses/LICENSE-2.0> or the MIT license
+// <LICENSE-MIT or http://opensource.org/licenses/MIT>, at your
+// option. This file may not be copied, modified, or distributed
+// except according to those terms.
+
 //! This crate provides macros to convert from slices, which have lengths
 //! that are stored and checked at runtime, into arrays, which have lengths
 //! known at compile time. This can make types more expressive (e.g.
