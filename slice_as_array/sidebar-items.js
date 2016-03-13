@@ -1,0 +1,1 @@
+initSidebarItems({"macro":[["slice_as_array!","Convert a slice to an array. `slice_to_array!(slice, [element_type; array_length]) -> Option<&[element_type; array_length]>`"],["slice_as_array_mut!","Convert a mutable slice to a mutable array. `slice_to_array_mut!(mutable_slice, [element_type; array_length]) -> Option<&mut [element_type; array_length]>`"]]});
