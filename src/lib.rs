@@ -17,7 +17,7 @@
 //! slice_as_array "1.0.0"
 //! ```
 //! To support being called from a `#![no_std]` crate, this crate has a feature
-//! named `with_std` that is on by default. A `#![no_std]` create should use:
+//! named `with_std` that is on by default. A `#![no_std]` crate should use:
 //!
 //! ```ignore
 //! [dependencies]
