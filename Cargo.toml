@@ -1,6 +1,6 @@
 [package]
 name = "slice_as_array"
-version = "0.1.0"
+version = "1.0.0"
 authors = ["Peter Reid <peter.d.reid@gmail.com>"]
 
 [features]
