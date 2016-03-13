@@ -67,7 +67,7 @@ macro_rules! slice_as_array_transmute {
 /// `slice_to_array!(slice, [element_type; array_length]) -> Option<&[element_type; array_length]>`
 #[macro_export]
 macro_rules! slice_as_array {
-    ($slice:expr, [$t:ident ; $len:expr] ) => {{
+    ($slice:expr, [$t:ty ; $len:expr] ) => {{
         unsafe fn this_transmute(xs: &[$t]) -> &[$t; $len] {
             slice_as_array_transmute!(xs.as_ptr())
         }
@@ -85,7 +85,7 @@ macro_rules! slice_as_array {
 /// `slice_to_array_mut!(mutable_slice, [element_type; array_length]) -> Option<&mut [element_type; array_length]>`
 #[macro_export]
 macro_rules! slice_as_array_mut {
-    ($slice:expr, [$t:ident ; $len:expr] ) => {{
+    ($slice:expr, [$t:ty ; $len:expr] ) => {{
         unsafe fn this_transmute(xs: &mut [$t]) -> &mut [$t; $len] {
             slice_as_array_transmute!(xs.as_mut_ptr())
         }
@@ -128,5 +128,18 @@ mod test {
         let xs: [u32; 6] = [1, 2, 4, 8, 16, 32];
         let xs_prefix: &[u32; 0] = slice_as_array!(&xs[1..1], [u32; 0]).unwrap();
         assert_eq!(xs_prefix, &[]);
+    }
+
+    #[test]
+    fn array_of_arrays() {
+        let xs: [[u8; 4]; 3] = [
+            [10,11,12,13],
+            [20,21,22,23],
+            [30,31,32,33],
+        ];
+
+        let xs_suffix: &[[u8;4]; 2] = slice_as_array!(&xs[1..], [[u8; 4]; 2]).unwrap();
+        assert_eq!(xs_suffix[0][0], 20);
+        assert_eq!(xs_suffix[1][3], 33);
     }
 }
