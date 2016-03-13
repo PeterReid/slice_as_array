@@ -1,0 +1,12 @@
+[package]
+name = "slice_as_array"
+version = "0.1.0"
+authors = ["Peter Reid <peter.d.reid@gmail.com>"]
+
+[features]
+default = ["use_std"]
+unstable = ["compiletest_rs"]
+use_std = []
+
+[dependencies]
+compiletest_rs = { version = "*", optional = true }
