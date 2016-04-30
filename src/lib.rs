@@ -108,6 +108,57 @@ macro_rules! slice_as_array_mut {
     }}
 }
 
+        
+/// Convert a slice to an array by copying each element.
+/// `slice_to_array_clone!(slice, [element_type; array_length]) -> Option<[element_type; array_length]>`
+#[macro_export]
+macro_rules! slice_to_array_clone {
+    ($slice:expr, [$t:ty ; $len:expr] ) => {{
+        type A = [$t; $len];
+        type T = $t;       
+        
+        struct SafeArrayInitialization {
+            array: Option<A>,
+            count: usize,
+        }
+        impl SafeArrayInitialization {
+            fn new() -> Self {
+                SafeArrayInitialization { array: Some(unsafe { ::std::mem::uninitialized()}), count: 0 }
+            }
+            fn init_from_slice(mut self, slice: &[T]) -> Option<A> {
+                {
+                    let array_mut: &mut [T] = self.array.as_mut().unwrap().as_mut();
+                    if slice.len() != array_mut.len() {
+                        return None;
+                    }
+                    debug_assert_eq!(self.count, 0);
+                    for (val, ptr) in slice.iter().zip(array_mut.iter_mut()) {
+                        let val = val.clone();
+                        unsafe { ::std::ptr::write(ptr, val) };
+                        self.count += 1;
+                    }
+                }
+                self.array.take()
+            }
+        }
+        impl Drop for SafeArrayInitialization {
+            fn drop(&mut self) {
+                if let Some(mut array) = self.array.take() {
+                    let count = self.count;
+                    {
+                        for ptr in array.as_mut()[..count].iter_mut() {
+                            unsafe { ::std::ptr::read(ptr) };
+                        }
+                    }
+                    ::std::mem::forget(array);
+                }
+            }
+        }
+        
+        SafeArrayInitialization::new().init_from_slice($slice)
+    }}
+}
+
 #[cfg(test)]
 mod test {
     #[test]
@@ -150,5 +201,12 @@ mod test {
         let xs_suffix: &[[u8;4]; 2] = slice_as_array!(&xs[1..], [[u8; 4]; 2]).unwrap();
         assert_eq!(xs_suffix[0][0], 20);
         assert_eq!(xs_suffix[1][3], 33);
+    }
+    
+    #[test]
+    fn copy_correct() {        
+        let xs: [u32; 6] = [1, 2, 4, 8, 16, 32];
+        let xs_prefix: [u32; 3] = slice_to_array_clone!(&xs[1..4], [u32; 3]).expect("Length mismatch");
+        assert_eq!(xs_prefix, [2, 4, 8]);
     }
 }
