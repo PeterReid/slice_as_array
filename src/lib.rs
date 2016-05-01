@@ -54,97 +54,9 @@
 //! ```
 //!
 
-// To support compiling with and without `std`, calls to various functions
-// are behind macros to use the version from either `std` or `core`.
+#![no_std]
 
-#[cfg(feature="use_std")]
-#[macro_export]
-#[doc(hidden)]
-macro_rules! _slice_as_array_transmute {
-    ($slice:expr) => { ::std::mem::transmute($slice) }
-}
-
-#[cfg(not(feature="use_std"))]
-#[macro_export]
-#[doc(hidden)]
-macro_rules! _slice_as_array_transmute {
-    ($slice:expr) => { ::core::mem::transmute($slice) }
-}
-
-
-#[cfg(feature="use_std")]
-#[macro_export]
-#[doc(hidden)]
-macro_rules! _slice_as_array_clone {
-    ($t:expr) => { ::std::clone::Clone::clone($t) }
-}
-
-#[cfg(not(feature="use_std"))]
-#[macro_export]
-#[doc(hidden)]
-macro_rules! _slice_as_array_clone {
-    ($t:expr) => { ::core::clone::Clone::clone($t) }
-}
-
-
-#[cfg(feature="use_std")]
-#[macro_export]
-#[doc(hidden)]
-macro_rules! _slice_as_array_write {
-    ($dst:expr, $src:expr) => { ::std::ptr::write($dst, $src) }
-}
-
-#[cfg(not(feature="use_std"))]
-#[macro_export]
-#[doc(hidden)]
-macro_rules! _slice_as_array_write {
-    ($dst:expr, $src:expr) => { ::core::ptr::write($dst, $src) }
-}
-
-
-#[cfg(feature="use_std")]
-#[macro_export]
-#[doc(hidden)]
-macro_rules! _slice_as_array_read {
-    ($src:expr) => { ::std::ptr::read($src) }
-}
-
-#[cfg(not(feature="use_std"))]
-#[macro_export]
-#[doc(hidden)]
-macro_rules! _slice_as_array_read {
-    ($src:expr) => { ::core::ptr::read($src) }
-}
-
-
-#[cfg(feature="use_std")]
-#[macro_export]
-#[doc(hidden)]
-macro_rules! _slice_as_array_uninitialized {
-    () => { ::std::mem::uninitialized() }
-}
-
-#[cfg(not(feature="use_std"))]
-#[macro_export]
-#[doc(hidden)]
-macro_rules! _slice_as_array_uninitialized {
-    () => { ::core::mem::uninitialized() }
-}
-
-#[cfg(feature="use_std")]
-#[macro_export]
-#[doc(hidden)]
-macro_rules! _slice_as_array_forget {
-    ($t:expr) => { ::std::mem::forget($t) }
-}
-
-#[cfg(not(feature="use_std"))]
-#[macro_export]
-#[doc(hidden)]
-macro_rules! _slice_as_array_forget {
-    ($t:expr) => { ::core::mem::forget($t) }
-}
-
+pub use core as local_core;
 
 // In slice_as_array[_mut], the inner function is to set the lifetime of the created array.
 
@@ -154,7 +66,7 @@ macro_rules! _slice_as_array_forget {
 macro_rules! slice_as_array {
     ($slice:expr, [$t:ty ; $len:expr] ) => {{
         unsafe fn this_transmute(xs: &[$t]) -> &[$t; $len] {
-            _slice_as_array_transmute!(xs.as_ptr())
+            $crate::local_core::mem::transmute(xs.as_ptr())
         }
 
         let s: &[$t] = $slice;
@@ -172,7 +84,7 @@ macro_rules! slice_as_array {
 macro_rules! slice_as_array_mut {
     ($slice:expr, [$t:ty ; $len:expr] ) => {{
         unsafe fn this_transmute(xs: &mut [$t]) -> &mut [$t; $len] {
-            _slice_as_array_transmute!(xs.as_mut_ptr())
+            $crate::local_core::mem::transmute(xs.as_mut_ptr())
         }
 
         let s: &mut [$t] = $slice;
@@ -198,7 +110,7 @@ macro_rules! slice_to_array_clone {
         }
         impl SafeArrayInitialization {
             fn new() -> Self {
-                SafeArrayInitialization { array: Some(unsafe { _slice_as_array_uninitialized!() }), count: 0 }
+                SafeArrayInitialization { array: Some(unsafe { $crate::local_core::mem::uninitialized() }), count: 0 }
             }
             fn init_from_slice(mut self, slice: &[T]) -> Option<A> {
                 {
@@ -208,8 +120,8 @@ macro_rules! slice_to_array_clone {
                     }
                     debug_assert_eq!(self.count, 0);
                     for (val, ptr) in slice.iter().zip(array_mut.iter_mut()) {
-                        let val = _slice_as_array_clone!(val);
-                        unsafe { _slice_as_array_write!(ptr, val) };
+                        let val = $crate::local_core::clone::Clone::clone(val);
+                        unsafe { $crate::local_core::ptr::write(ptr, val) };
                         self.count += 1;
                     }
                 }
@@ -222,10 +134,10 @@ macro_rules! slice_to_array_clone {
                     let count = self.count;
                     {
                         for ptr in array.as_mut()[..count].iter_mut() {
-                            unsafe { _slice_as_array_read!(ptr) };
+                            unsafe { $crate::local_core::ptr::read(ptr) };
                         }
                     }
-                    _slice_as_array_forget!(array);
+                    $crate::local_core::mem::forget(array);
                 }
             }
         }
