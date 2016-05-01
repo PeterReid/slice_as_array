@@ -101,20 +101,17 @@ macro_rules! slice_as_array_mut {
 #[macro_export]
 macro_rules! slice_to_array_clone {
     ($slice:expr, [$t:ty ; $len:expr] ) => {{
-        type A = [$t; $len];
-        type T = $t;
-
         struct SafeArrayInitialization {
-            array: Option<A>,
+            array: Option<[$t; $len]>,
             count: usize,
         }
         impl SafeArrayInitialization {
             fn new() -> Self {
                 SafeArrayInitialization { array: Some(unsafe { $crate::local_core::mem::uninitialized() }), count: 0 }
             }
-            fn init_from_slice(mut self, slice: &[T]) -> Option<A> {
+            fn init_from_slice(mut self, slice: &[$t]) -> Option<[$t; $len]> {
                 {
-                    let array_mut: &mut [T] = self.array.as_mut().unwrap().as_mut();
+                    let array_mut: &mut [$t] = self.array.as_mut().unwrap().as_mut();
                     if slice.len() != array_mut.len() {
                         return None;
                     }
