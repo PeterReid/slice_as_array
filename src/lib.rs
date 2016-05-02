@@ -54,9 +54,28 @@
 //! ```
 //!
 
-#![no_std]
+#[doc(hidden)]
+pub mod reexport {
+    #[inline] pub fn clone<T: Clone>(source: T) -> T { source.clone() }
+    #[inline] pub unsafe fn ptr_write<T>(dst: *mut T, src: T) { ::std::ptr::write(dst, src) }
+    #[inline] pub unsafe fn ptr_read<T>(src: *const T) -> T { ::std::ptr::read(src) }
+    #[inline] pub fn forget<T>(t: T) { ::std::mem::forget(t) }
+    #[inline] pub unsafe fn uninitialized<T>() -> T { ::std::mem::uninitialized() }
+}
 
-pub use core as local_core;
+#[cfg(feature="use_std")]
+#[macro_export]
+#[doc(hidden)]
+macro_rules! slice_as_array_transmute {
+    ($slice:expr) => { ::std::mem::transmute($slice) }
+}
+
+#[cfg(not(feature="use_std"))]
+#[macro_export]
+macro_rules! slice_as_array_transmute {
+    ($slice:expr) => { ::core::mem::transmute($slice) }
+}
+
 
 // In slice_as_array[_mut], the inner function is to set the lifetime of the created array.
 
@@ -66,7 +85,7 @@ pub use core as local_core;
 macro_rules! slice_as_array {
     ($slice:expr, [$t:ty ; $len:expr] ) => {{
         unsafe fn this_transmute(xs: &[$t]) -> &[$t; $len] {
-            $crate::local_core::mem::transmute(xs.as_ptr())
+            slice_as_array_transmute!(xs.as_ptr())
         }
 
         let s: &[$t] = $slice;
@@ -84,7 +103,7 @@ macro_rules! slice_as_array {
 macro_rules! slice_as_array_mut {
     ($slice:expr, [$t:ty ; $len:expr] ) => {{
         unsafe fn this_transmute(xs: &mut [$t]) -> &mut [$t; $len] {
-            $crate::local_core::mem::transmute(xs.as_mut_ptr())
+            slice_as_array_transmute!(xs.as_mut_ptr())
         }
 
         let s: &mut [$t] = $slice;
@@ -107,7 +126,7 @@ macro_rules! slice_to_array_clone {
         }
         impl SafeArrayInitialization {
             fn new() -> Self {
-                SafeArrayInitialization { array: Some(unsafe { $crate::local_core::mem::uninitialized() }), count: 0 }
+                SafeArrayInitialization { array: Some(unsafe { $crate::reexport::uninitialized() }), count: 0 }
             }
             fn init_from_slice(mut self, slice: &[$t]) -> Option<[$t; $len]> {
                 {
@@ -117,8 +136,8 @@ macro_rules! slice_to_array_clone {
                     }
                     debug_assert_eq!(self.count, 0);
                     for (val, ptr) in slice.iter().zip(array_mut.iter_mut()) {
-                        let val = $crate::local_core::clone::Clone::clone(val);
-                        unsafe { $crate::local_core::ptr::write(ptr, val) };
+                        let val = $crate::reexport::clone(*val);
+                        unsafe { $crate::reexport::ptr_write(ptr, val) };
                         self.count += 1;
                     }
                 }
@@ -131,10 +150,10 @@ macro_rules! slice_to_array_clone {
                     let count = self.count;
                     {
                         for ptr in array.as_mut()[..count].iter_mut() {
-                            unsafe { $crate::local_core::ptr::read(ptr) };
+                            unsafe { $crate::reexport::ptr_read(ptr) };
                         }
                     }
-                    $crate::local_core::mem::forget(array);
+                    $crate::reexport::forget(array);
                 }
             }
         }
