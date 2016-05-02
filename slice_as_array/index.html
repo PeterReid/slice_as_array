@@ -46,7 +46,7 @@
             <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                 [<span class='inner'>&#x2212;</span>]
             </a>
-        </span><a id='src-0' class='srclink' href='../src/slice_as_array/src/lib.rs.html#10-154' title='goto source code'>[src]</a></span></h1>
+        </span><a id='src-0' class='srclink' href='../src/slice_as_array/lib.rs.html#10-222' title='goto source code'>[src]</a></span></h1>
 <div class='docblock'><p>This crate provides macros to convert from slices, which have lengths
 that are stored and checked at runtime, into arrays, which have lengths
 known at compile time. This can make types more expressive (e.g.
@@ -59,20 +59,17 @@ a slice of length 4, or <code>None</code> otherwise.</p>
  if <code>ys</code> was a slice of length 7, or <code>None</code> otherwise.</p>
 
 <p>For most users, stating a dependency on this is simply:</p>
-
 <pre class='rust rust-example-rendered'>
 [<span class='ident'>dependencies</span>]
 <span class='ident'>slice_as_array</span> <span class='string'>&quot;1.0.0&quot;</span></pre>
 
 <p>To support being called from a <code>#![no_std]</code> crate, this crate has a feature
 named <code>with_std</code> that is on by default. A <code>#![no_std]</code> crate should use:</p>
-
 <pre class='rust rust-example-rendered'>
 [<span class='ident'>dependencies</span>]
 <span class='ident'>slice_as_array</span> <span class='op'>=</span> { <span class='ident'>version</span> <span class='op'>=</span> <span class='string'>&quot;1.0.0&quot;</span>, <span class='ident'>default</span><span class='op'>-</span><span class='ident'>features</span> <span class='op'>=</span> <span class='boolval'>false</span> }</pre>
 
 <p>Example usage:</p>
-
 <pre class='rust rust-example-rendered'>
 <span class='attribute'>#[<span class='ident'>macro_use</span>]</span> <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>slice_as_array</span>;
 
@@ -96,7 +93,8 @@ named <code>with_std</code> that is on by default. A <code>#![no_std]</code> cra
                                title='slice_as_array::slice_as_array!'>slice_as_array!</a></td>
                         <td class='docblock short'>
                              <p>Convert a slice to an array.
-<code>slice_to_array!(slice, [element_type; array_length]) -&gt; Option&lt;&amp;[element_type; array_length]&gt;</code></p>
+<code>slice_as_array!(slice, [element_type; array_length]) -&gt; Option&lt;&amp;[element_type; array_length]&gt;</code></p>
+
                         </td>
                     </tr>
                 
@@ -105,7 +103,18 @@ named <code>with_std</code> that is on by default. A <code>#![no_std]</code> cra
                                title='slice_as_array::slice_as_array_mut!'>slice_as_array_mut!</a></td>
                         <td class='docblock short'>
                              <p>Convert a mutable slice to a mutable array.
-<code>slice_to_array_mut!(mutable_slice, [element_type; array_length]) -&gt; Option&lt;&amp;mut [element_type; array_length]&gt;</code></p>
+<code>slice_as_array_mut!(mutable_slice, [element_type; array_length]) -&gt; Option&lt;&amp;mut [element_type; array_length]&gt;</code></p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='macro' href='macro.slice_to_array_clone!.html'
+                               title='slice_as_array::slice_to_array_clone!'>slice_to_array_clone!</a></td>
+                        <td class='docblock short'>
+                             <p>Convert a slice to an array by cloning each element.
+<code>slice_to_array_clone!(slice, [element_type; array_length]) -&gt; Option&lt;[element_type; array_length]&gt;</code></p>
+
                         </td>
                     </tr>
                 </table></section>
@@ -151,7 +160,7 @@ named <code>with_std</code> that is on by default. A <code>#![no_std]</code> cra
 
                 <p>
                     Search functions by type signature (e.g.
-                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                    <code>vec -> usize</code>)
                 </p>
             </div>
         </div>

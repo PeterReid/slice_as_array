@@ -4,10 +4,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="API documentation for the Rust `slice_as_array!` macro in crate `slice_as_array`.">
-    <meta name="keywords" content="rust, rustlang, rust-lang, slice_as_array!">
+    <meta name="description" content="API documentation for the Rust `slice_to_array_clone!` macro in crate `slice_as_array`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, slice_to_array_clone!">
 
-    <title>slice_as_array::slice_as_array! - Rust</title>
+    <title>slice_as_array::slice_to_array_clone! - Rust</title>
 
     <link rel="stylesheet" type="text/css" href="../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../main.css">
@@ -27,7 +27,7 @@
 
     <nav class="sidebar">
         
-        <p class='location'><a href='index.html'>slice_as_array</a></p><script>window.sidebarCurrent = {name: 'slice_as_array!', ty: 'macro', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+        <p class='location'><a href='index.html'>slice_as_array</a></p><script>window.sidebarCurrent = {name: 'slice_to_array_clone!', ty: 'macro', relpath: ''};</script><script defer src="sidebar-items.js"></script>
     </nav>
 
     <nav class="sub">
@@ -42,17 +42,17 @@
     </nav>
 
     <section id='main' class="content macro">
-<h1 class='fqn'><span class='in-band'><a href='index.html'>slice_as_array</a>::<wbr><a class='macro' href=''>slice_as_array!</a></span><span class='out-of-band'><span id='render-detail'>
+<h1 class='fqn'><span class='in-band'><a href='index.html'>slice_as_array</a>::<wbr><a class='macro' href=''>slice_to_array_clone!</a></span><span class='out-of-band'><span id='render-detail'>
             <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                 [<span class='inner'>&#x2212;</span>]
             </a>
-        </span><a id='src-22' class='srclink' href='../src/slice_as_array/lib.rs.html#85-98' title='goto source code'>[src]</a></span></h1>
+        </span><a id='src-24' class='srclink' href='../src/slice_as_array/lib.rs.html#121-163' title='goto source code'>[src]</a></span></h1>
 <pre class='rust macro'>
-<span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>slice_as_array</span> {
+<span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>slice_to_array_clone</span> {
     (<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>slice</span>:<span class='ident'>expr</span>, [<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>t</span>:<span class='ident'>ty</span> ; <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>len</span>:<span class='ident'>expr</span>] ) <span class='op'>=&gt;</span> { ... };
 }</pre>
-<div class='docblock'><p>Convert a slice to an array.
-<code>slice_as_array!(slice, [element_type; array_length]) -&gt; Option&lt;&amp;[element_type; array_length]&gt;</code></p>
+<div class='docblock'><p>Convert a slice to an array by cloning each element.
+<code>slice_to_array_clone!(slice, [element_type; array_length]) -&gt; Option&lt;[element_type; array_length]&gt;</code></p>
 </div></section>
     <section id='search' class="content hidden"></section>
 
