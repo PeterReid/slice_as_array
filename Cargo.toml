@@ -1,6 +1,6 @@
 [package]
 name = "slice_as_array"
-version = "1.0.0"
+version = "1.1.0"
 authors = ["Peter Reid <peter.d.reid@gmail.com>"]
 license = "MIT/Apache-2.0"
 description = "Cast slices to arrays"

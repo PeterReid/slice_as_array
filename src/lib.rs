@@ -18,19 +18,22 @@
 //! `slice_as_array_mut!(ys, [String; 7])` returns `Some(&mut [String; 7])`
 //!  if `ys` was a slice of length 7, or `None` otherwise.
 //!
+//! `slice_to_array_clone!(zs, [String; 4]` returns `Some([String; 4])`
+//! if `zs` was a slice of length 4, or `None otherwise. The passed-in slice
+//! remains intact and its elements are cloned.
 //!
 //! For most users, stating a dependency on this is simply:
 //!
 //! ```ignore
 //! [dependencies]
-//! slice_as_array "1.0.0"
+//! slice_as_array "1.1.0"
 //! ```
 //! To support being called from a `#![no_std]` crate, this crate has a feature
 //! named `with_std` that is on by default. A `#![no_std]` crate should use:
 //!
 //! ```ignore
 //! [dependencies]
-//! slice_as_array = { version = "1.0.0", default-features = false }
+//! slice_as_array = { version = "1.1.0", default-features = false }
 //! ```
 //!
 //! Example usage:
