@@ -46,7 +46,7 @@
             <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                 [<span class='inner'>&#x2212;</span>]
             </a>
-        </span><a id='src-0' class='srclink' href='../src/slice_as_array/lib.rs.html#10-222' title='goto source code'>[src]</a></span></h1>
+        </span><a id='src-0' class='srclink' href='../src/slice_as_array/lib.rs.html#10-225' title='goto source code'>[src]</a></span></h1>
 <div class='docblock'><p>This crate provides macros to convert from slices, which have lengths
 that are stored and checked at runtime, into arrays, which have lengths
 known at compile time. This can make types more expressive (e.g.
@@ -58,16 +58,20 @@ a slice of length 4, or <code>None</code> otherwise.</p>
 <p><code>slice_as_array_mut!(ys, [String; 7])</code> returns <code>Some(&amp;mut [String; 7])</code>
  if <code>ys</code> was a slice of length 7, or <code>None</code> otherwise.</p>
 
+<p><code>slice_to_array_clone(zs, [String; 4]</code> returns <code>Some([String; 4])</code>
+if <code>zs</code> was a slice of length 4, or `None otherwise. The passed-in slice
+remains intact and its elements are cloned.</p>
+
 <p>For most users, stating a dependency on this is simply:</p>
 <pre class='rust rust-example-rendered'>
 [<span class='ident'>dependencies</span>]
-<span class='ident'>slice_as_array</span> <span class='string'>&quot;1.0.0&quot;</span></pre>
+<span class='ident'>slice_as_array</span> <span class='string'>&quot;1.1.0&quot;</span></pre>
 
 <p>To support being called from a <code>#![no_std]</code> crate, this crate has a feature
 named <code>with_std</code> that is on by default. A <code>#![no_std]</code> crate should use:</p>
 <pre class='rust rust-example-rendered'>
 [<span class='ident'>dependencies</span>]
-<span class='ident'>slice_as_array</span> <span class='op'>=</span> { <span class='ident'>version</span> <span class='op'>=</span> <span class='string'>&quot;1.0.0&quot;</span>, <span class='ident'>default</span><span class='op'>-</span><span class='ident'>features</span> <span class='op'>=</span> <span class='boolval'>false</span> }</pre>
+<span class='ident'>slice_as_array</span> <span class='op'>=</span> { <span class='ident'>version</span> <span class='op'>=</span> <span class='string'>&quot;1.1.0&quot;</span>, <span class='ident'>default</span><span class='op'>-</span><span class='ident'>features</span> <span class='op'>=</span> <span class='boolval'>false</span> }</pre>
 
 <p>Example usage:</p>
 <pre class='rust rust-example-rendered'>

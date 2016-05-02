@@ -263,6 +263,9 @@
 <span id="220">220</span>
 <span id="221">221</span>
 <span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
 </pre><pre class='rust '>
 <span class='comment'>// Copyright 2016 Peter Reid. See the COPYRIGHT file at the top-level</span>
 <span class='comment'>// directory of this distribution.</span>
@@ -284,19 +287,22 @@
 <span class='doccomment'>//! `slice_as_array_mut!(ys, [String; 7])` returns `Some(&amp;mut [String; 7])`</span>
 <span class='doccomment'>//!  if `ys` was a slice of length 7, or `None` otherwise.</span>
 <span class='doccomment'>//!</span>
+<span class='doccomment'>//! `slice_to_array_clone(zs, [String; 4]` returns `Some([String; 4])`</span>
+<span class='doccomment'>//! if `zs` was a slice of length 4, or `None otherwise. The passed-in slice</span>
+<span class='doccomment'>//! remains intact and its elements are cloned.</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! For most users, stating a dependency on this is simply:</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! ```ignore</span>
 <span class='doccomment'>//! [dependencies]</span>
-<span class='doccomment'>//! slice_as_array &quot;1.0.0&quot;</span>
+<span class='doccomment'>//! slice_as_array &quot;1.1.0&quot;</span>
 <span class='doccomment'>//! ```</span>
 <span class='doccomment'>//! To support being called from a `#![no_std]` crate, this crate has a feature</span>
 <span class='doccomment'>//! named `with_std` that is on by default. A `#![no_std]` crate should use:</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! ```ignore</span>
 <span class='doccomment'>//! [dependencies]</span>
-<span class='doccomment'>//! slice_as_array = { version = &quot;1.0.0&quot;, default-features = false }</span>
+<span class='doccomment'>//! slice_as_array = { version = &quot;1.1.0&quot;, default-features = false }</span>
 <span class='doccomment'>//! ```</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! Example usage:</span>
