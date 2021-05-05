@@ -76,7 +76,7 @@ macro_rules! slice_as_array_transmute {
 #[cfg(not(feature="use_std"))]
 #[macro_export]
 macro_rules! slice_as_array_transmute {
-    ($slice:expr) => { ::core::mem::transmute($slice) }
+    ($slice:expr) => { core::mem::transmute($slice) }
 }
 
 
